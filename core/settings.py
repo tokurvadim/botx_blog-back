@@ -73,8 +73,10 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [
+            BASE_DIR / 'front',
+        ],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -104,11 +106,10 @@ NEED_LOGGER = env["NEED_LOGGER"]
 # Internal IPS
 INTERNAL_IPS = env["INTERNAL_IPS"].split(", ")
 
-# Yadro
-APP_ID = env['APP_ID']
-THIRD_PARTY_APP_URL = env['THIRD_PARTY_APP_URL']
-THIRD_PARTY_APP_URL_TELEGRAPH = env['THIRD_PARTY_APP_URL_TELEGRAPH']
-THIRD_PARTY_APP_URL_TELEGRAPH_API = env['THIRD_PARTY_APP_URL_TELEGRAPH_API']
+# Telegraph core
+TELEGRAPH_URL = env['TELEGRAPH_URL']
+TELEGRAPH_EDIT_URL = env['TELEGRAPH_EDIT_URL']
+TELEGRAPH_API_URL = env['TELEGRAPH_API_URL']
 
 
 # Redis
@@ -160,10 +161,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-STATIC_URL = '/static/'
+STATIC_URL = 'front/assets/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
+   os.path.join(BASE_DIR, STATIC_URL),
 ]
 
 CORS_ALLOWED_ORIGINS = env["CORS_ALLOWED_ORIGINS"].split(", ")
