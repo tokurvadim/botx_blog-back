@@ -1,15 +1,19 @@
-import inspect
 import requests
 from requests import JSONDecodeError
-from core.settings import TELEGRAPH_URL
+from core.settings import TELEGRAPH_URL, TELEGRAPH_EDIT_URL, TELEGRAPH_API_URL
 from core.Methods import Methods
 
 
 class Route(Methods):
-    def __init__(self, need_execute_local=False, *args, **kwargs):
-        self._THIRD_PARTY_APP_URL = TELEGRAPH_URL
+    def __init__(self, *args, **kwargs):
+        # self._THIRD_PARTY_APP_URL = TELEGRAPH_URL
+        self.TELEGRAPH_URL = TELEGRAPH_URL
+        self.TELEGRAPH_EDIT_URL = TELEGRAPH_EDIT_URL
+        self.TELEGRAPH_API_URL = TELEGRAPH_API_URL
         self._method: str | None = None
-        self._request: dict | None = None
+        self._request_data: dict | None = {}
+        self._request_files: dict | None = None
+        self._request_cookies: dict | None = None
         self._response: dict | None = None
         self._headers: dict | None = None
         self.__request_headers: dict | None = None
@@ -17,23 +21,7 @@ class Route(Methods):
         self._status_code: int | None = None
         self._not_allowed_headers = ('Connection', 'Keep-Alive', "Content-Length", "Transfer-Encoding", "Content-Encoding")
 
-        if need_execute_local:
-            request = requests.Request(
-                method=self.get_method(),
-                url=f"{self._THIRD_PARTY_APP_URL}{self.get_path()}",
-            )
-            other_params: list = ["data", "query_params", "json", "headers"]
-            for param in other_params:
-                if param in inspect.signature(self.__init__).parameters:
-                    setattr(request, param, getattr(self, param))
-                else:
-                    setattr(request, param, {})
-
-            getattr(self, self.get_method().lower())(request)
-
     def request_setter(self, request, *args, **kwargs):
-        self._dialogue_id = kwargs.get("dialogue_id")
-        self._bot_id = kwargs.get("bot_id")
         self.__request_headers = dict(request.headers)
         self.__request_headers["Content-Type"] = "application/json"
         super().request_setter(request)
@@ -58,11 +46,20 @@ class Route(Methods):
     def get_headers(self) -> dict:
         return self._headers
 
+    def set_cookies(self) -> None:
+        self._request_cookies = {
+            'tph_uuid': 'dteEx0DCjCkQfXapBJHLyWPfyzh8ruzEWLhtJU32wn',
+            'tph_token': 'a00835f8ffba511c9a71c2397c33fac4229a782cca04754026b90f0b1316',
+        }
+
+    def get_cookies(self) -> dict:
+        return self._request_cookies
+
     def set_request(self, data: dict) -> None:
-        self._request = data
+        self._request_data = data
 
     def get_request(self) -> dict:
-        return self._request
+        return self._request_data
 
     def set_response(self, response: dict | None, headers: dict | None, status_code=None, ) -> None:
         if response is not None and status_code is not None:
@@ -85,8 +82,6 @@ class Route(Methods):
         return response
 
     def send(self) -> tuple:
-        print(self.get_headers())
-        print(self.get_request())
         response = requests.request(
             method=self.get_method(),
             url=self.get_url(),
