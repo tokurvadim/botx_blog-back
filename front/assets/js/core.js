@@ -1506,7 +1506,7 @@ function savePage() {
 
   $.ajax(T.apiUrl + "/api/v0/save/", {
     data: {
-      access_token:   'a7f92b75dbac779abec024cb7d8418e899be7c55ba53e5139678e785a3cd',
+      access_token:   '',
       title:          title,
       content:        JSON.stringify(content),
       return_content: true
@@ -1523,7 +1523,6 @@ function savePage() {
       return $tl_article.classList.remove("tl_article_saving"),
       title.error ? (updateEditable(!0),
       showError(data.error)) : (draftClear(),
-      /*void (!T.pageId && t.path && (location.href = "/" + t.path)))*/
       void (!T.pageId && data.result.url && (location.href = data.result.url)))
     },
     error: function(data) {
@@ -2179,9 +2178,9 @@ function isOverElement(bounds1, $elem2, padding) {
   let pos2 = $elem2;//.position();
   let bounds2 = {
     top:    pos2._top,
-    bottom: pos2._top + $elem2.outerHeight(),
+    bottom: pos2._top + $elem2.offsetHeight,
     left:   pos2._left,
-    right:  pos2._left + $elem2.outerWidth(),
+    right:  pos2._left + $elem2.offsetWidth,
   };
   if ((bounds1.left - bounds2.right >= padding ||
        bounds2.left - bounds1.right >= padding) ||
