@@ -91,12 +91,12 @@ TEMPLATES = [
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env["POSTGRES_DB_NAME"],
-        'USER': env["POSTGRES_DB_USER"],
-        'PASSWORD': env["POSTGRES_DB_PASSWORD"],
-        'HOST': env["POSTGRES_DB_HOST"],
-        'PORT': env["POSTGRES_DB_PORT"],
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': str(env["MYSQL_DB_NAME"]),
+        'USER': str(env["MYSQL_DB_USER"]),
+        'PASSWORD': str(env["MYSQL_DB_PASSWORD"]),
+        'HOST': str(env["MYSQL_DB_HOST"]),
+        'PORT': str(env["MYSQL_DB_PORT"]),
     }
 }
 
