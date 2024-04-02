@@ -9,7 +9,7 @@ class User(models.Model):
 class Page(models.Model):
     id = models.BigAutoField(primary_key=True)
     path = models.SlugField(max_length=256, unique=True)
-    access_token = models.ForeignKey(to='User', on_delete=models.PROTECT, max_length=60)
+    access_token = models.ForeignKey(to='User', on_delete=models.CASCADE, max_length=60)
     created_at = models.DateField(auto_now_add=True)
     last_changed_at = models.DateField(auto_now=True)
     content = models.BinaryField(max_length=65792)
@@ -22,7 +22,7 @@ class Page_Category(models.Model):
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
-    parent_id = models.ForeignKey(to='self', on_delete=models.PROTECT, null=True)
+    parent_id = models.ForeignKey(to='self', on_delete=models.CASCADE, null=True)
 
 class Comment(models.Model):
     id = models.BigAutoField(primary_key=True)
