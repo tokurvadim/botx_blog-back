@@ -9,10 +9,11 @@ class User(models.Model):
 class Page(models.Model):
     id = models.BigAutoField(primary_key=True)
     path = models.SlugField(max_length=256, unique=True)
-    access_token = models.ForeignKey(to='User', on_delete=models.CASCADE, max_length=60)
+    title = models.SlugField(max_length=256)
+    author_name = models.ForeignKey(to='User', on_delete=models.CASCADE, max_length=60)
+    content = models.BinaryField(max_length=65792)
     created_at = models.DateField(auto_now_add=True)
     last_changed_at = models.DateField(auto_now=True)
-    content = models.BinaryField(max_length=65792)
     views = models.IntegerField(default=0)
 
 class Page_Category(models.Model):
