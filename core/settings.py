@@ -52,9 +52,9 @@ INSTALLED_APPS = [
     'rest_framework',
     # 'rest_framework_swagger',
     # 'drf_yasg',
-    "core",
-    "services",
-    "front",
+    'core',
+    'services',
+    'front',
 ]
 
 MIDDLEWARE = [
